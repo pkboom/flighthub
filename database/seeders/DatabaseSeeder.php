@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Airiport;
 use App\Models\Airline;
+use App\Models\Airport;
 use App\Models\Flight;
 use App\Models\Trip;
 use Illuminate\Database\Seeder;
@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Air Canada',
         ]);
 
-        Airiport::create([
+        Airport::create([
             'code' => 'YUL',
             'city_code' => 'YMQ',
             'name' => 'Pierre Elliott Trudeau International',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'timezone' => 'America/Montreal',
         ]);
 
-        Airiport::create([
+        Airport::create([
             'code' => 'YVR',
             'city_code' => 'YVR',
             'name' => 'Vancouver International',
@@ -44,9 +44,9 @@ class DatabaseSeeder extends Seeder
         Flight::create([
             'airline_id' => Airline::first()->id,
             'number' => '301',
-            'departure_airport_id' => Airiport::first()->id,
+            'departure_airport_id' => Airport::first()->id,
             'departure_time' => '07:35',
-            'arriving_airport_id' => Airiport::offset(1)->first()->id,
+            'arrival_airport_id' => Airport::offset(1)->first()->id,
             'arrival_time' => '10:05',
             'price' => '273.23',
         ]);
@@ -54,9 +54,9 @@ class DatabaseSeeder extends Seeder
         Flight::create([
             'airline_id' => Airline::first()->id,
             'number' => '302',
-            'departure_airport_id' => Airiport::offset(1)->first()->id,
+            'departure_airport_id' => Airport::offset(1)->first()->id,
             'departure_time' => '11:30',
-            'arriving_airport_id' => Airiport::first()->id,
+            'arrival_airport_id' => Airport::first()->id,
             'arrival_time' => '19:11',
             'price' => '220.63',
         ]);

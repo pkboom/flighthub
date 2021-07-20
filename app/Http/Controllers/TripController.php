@@ -14,16 +14,20 @@ class TripController extends Controller
     {
         return Inertia::render('Trips/Index', [
             'filters' => Request::all('search', 'trashed'),
-            'trips' => Trip::with('flights')
-                ->filter(Request::only('search', 'trashed'))
+            'trips' => Trip::query()
+                ->with(['flights' => function ($query) {
+                    $query->with(['departureAirport', 'arrivalAirport']);
+                }])
+                // ->filter(Request::only('search', 'trashed'))
                 ->paginate(10)
                 ->withQueryString()
                 ->through(fn ($trip) => [
                     'id' => $trip->id,
-                    'name' => $trip->name,
-                    'phone' => $trip->phone,
-                    'city' => $trip->city,
-                    'deleted_at' => $trip->deleted_at,
+                    'flights' => $trip->flights,
+                    // 'departure_location' => $trip->flights->departureAirport->city,
+                    // 'departure_time' => $trip->flights->departure_time,
+                    // 'arrival_location' => $trip->flights->arrivalAirport->city,
+                    'price' => $trip->flights->sum('price'),
                 ]),
         ]);
     }

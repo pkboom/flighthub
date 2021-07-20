@@ -2,6 +2,6 @@
 
 namespace App\Models;
 
-class Airiport extends Model
+class Airport extends Model
 {
 }

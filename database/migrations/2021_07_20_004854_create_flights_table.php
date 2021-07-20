@@ -15,14 +15,17 @@ class CreateFlightsTable extends Migration
     {
         Schema::create('flights', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('airline_id');
+            $table->foreignId('airline_id')->constrained();
             $table->unsignedInteger('number');
-            $table->foreignId('departure_airport_id');
+            $table->unsignedBigInteger('departure_airport_id');
             $table->timestamp('departure_time');
-            $table->foreignId('arriving_airport_id');
+            $table->unsignedBigInteger('arrival_airport_id');
             $table->timestamp('arrival_time');
             $table->decimal('price', 10, 2);
             $table->timestamps();
+
+            $table->foreign('departure_airport_id')->references('id')->on('airports');
+            $table->foreign('arrival_airport_id')->references('id')->on('airports');
         });
     }
 

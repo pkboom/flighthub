@@ -10,9 +10,4 @@ abstract class Model extends Eloquent
     use HasFactory;
 
     protected $guarded = [];
-    
-    public function getPerPage()
-    {
-        return 10;
-    }
 }
