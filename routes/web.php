@@ -4,17 +4,6 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\TripController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 // Auth
 
 Route::get('login', [AuthenticatedSessionController::class, 'create'])
@@ -27,8 +16,6 @@ Route::post('login', [AuthenticatedSessionController::class, 'store'])
 
 Route::delete('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
-
-// Dashboard
 
 Route::redirect('/', 'trips');
 
@@ -46,6 +33,3 @@ Route::get('trips/{trip}/edit', [TripController::class, 'edit'])
 
 Route::put('trips/{trip}', [TripController::class, 'update'])
     ->name('trips.update');
-
-// Route::delete('trips/{trip}', [TripController::class, 'destroy'])
-//     ->name('trips.destroy');

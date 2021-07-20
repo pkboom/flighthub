@@ -3,17 +3,11 @@
     <h1 class="mb-8 font-bold text-3xl">Trips</h1>
     <div class="mb-6 flex justify-between items-center">
       <search-filter v-model="form.search" class="w-full max-w-md mr-4" @reset="reset">
-        <label class="block text-gray-700">Role:</label>
-        <select v-model="form.role" class="mt-1 w-full form-select">
+        <label class="block text-gray-700">Type:</label>
+        <select v-model="form.type" class="mt-1 w-full form-select">
           <option :value="null" />
-          <option value="trip">Trip</option>
-          <option value="owner">Owner</option>
-        </select>
-        <label class="mt-4 block text-gray-700">Trashed:</label>
-        <select v-model="form.trashed" class="mt-1 w-full form-select">
-          <option :value="null" />
-          <option value="with">With Trashed</option>
-          <option value="only">Only Trashed</option>
+          <option value="one_way">One Way</option>
+          <option value="round_trip">Round Trip</option>
         </select>
       </search-filter>
       <inertia-link class="btn-indigo" :href="route('trips.create')">
@@ -24,25 +18,36 @@
     <div class="bg-white rounded-md shadow overflow-x-auto">
       <table class="w-full whitespace-nowrap">
         <tr class="text-left font-bold">
-          <th class="px-6 pt-6 pb-4">Name</th>
-          <th class="px-6 pt-6 pb-4">Email</th>
-          <th class="px-6 pt-6 pb-4" colspan="2">Role</th>
+          <th class="px-6 pt-6 pb-4">Type</th>
+          <th class="px-6 pt-6 pb-4">Departure</th>
+          <th class="px-6 pt-6 pb-4">Arrival</th>
+          <th class="px-6 pt-6 pb-4">Departure Time</th>
+          <th class="px-6 pt-6 pb-4" colspan="2">Price</th>
         </tr>
-        <tr v-for="trip in trips" :key="trip.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
+        <tr v-for="trip in trips.data" :key="trip.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
           <td class="border-t">
             <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('trips.edit', trip.id)">
-              <img v-if="trip.photo" class="block w-5 h-5 rounded-full mr-2 -my-2" :src="trip.photo" />
-              {{ trip.name }}
+              {{ trip.type }}
             </inertia-link>
           </td>
           <td class="border-t">
             <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
-              {{ trip.email }}
+              {{ trip.departure_location }}
             </inertia-link>
           </td>
           <td class="border-t">
             <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
-              {{ trip.owner ? 'Owner' : 'Trip' }}
+              {{ trip.arrival_location }}
+            </inertia-link>
+          </td>
+          <td class="border-t">
+            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+              {{ trip.departure_time }}
+            </inertia-link>
+          </td>
+          <td class="border-t">
+            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+              {{ trip.price }}
             </inertia-link>
           </td>
           <td class="border-t w-px">

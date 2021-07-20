@@ -23,10 +23,10 @@ class TripController extends Controller
                 ->withQueryString()
                 ->through(fn ($trip) => [
                     'id' => $trip->id,
-                    'flights' => $trip->flights,
-                    // 'departure_location' => $trip->flights->departureAirport->city,
-                    // 'departure_time' => $trip->flights->departure_time,
-                    // 'arrival_location' => $trip->flights->arrivalAirport->city,
+                    'type' => $trip->type,
+                    'departure_location' => ($departureAirport = $trip->flights->sortBy('departure_time')->first()->departureAirport)->name,
+                    'departure_time' => $trip->flights->sortBy('departure_time')->first()->departure_time->setTimezone($departureAirport->timezone)->format('Y-m-d H:i:m'),
+                    'arrival_location' => $trip->flights->sortBy('arrival_time')->first()->arrivalAirport->name,
                     'price' => $trip->flights->sum('price'),
                 ]),
         ]);
@@ -57,19 +57,30 @@ class TripController extends Controller
 
     public function edit(Trip $trip)
     {
+        $trip->load(['flights' => function ($query) {
+            $query->with('departureAirport', 'arrivalAirport', 'airline');
+        }]);
+
         return Inertia::render('Trips/Edit', [
             'trip' => [
                 'id' => $trip->id,
-                'name' => $trip->name,
-                'email' => $trip->email,
-                'phone' => $trip->phone,
-                'address' => $trip->address,
-                'city' => $trip->city,
-                'region' => $trip->region,
-                'country' => $trip->country,
-                'postal_code' => $trip->postal_code,
-                'deleted_at' => $trip->deleted_at,
-                'contacts' => $trip->contacts()->orderByName()->get()->map->only('id', 'name', 'city', 'phone'),
+                'type' => $trip->type,
+                'departure_location' => ($departureAirport = $trip->flights->sortBy('departure_time')->first()->departureAirport)->name,
+                'departure_time' => $trip->flights->sortBy('departure_time')->first()->departure_time->setTimezone($departureAirport->timezone)->format('Y-m-d H:i:m'),
+                'arrival_location' => $trip->flights->sortByDesc('arrival_time')->first()->arrivalAirport->name,
+                'price' => $trip->flights->sum('price'),
+                'flights' => $trip->flights->map(function ($flight) {
+                    return [
+                        'airline_code' => $flight->airline->code,
+                        'airline_name' => $flight->airline->name,
+                        'number' => $flight->number,
+                        'price' => $flight->price,
+                        'departure' => ($departureAirport = $flight->departureAirport)->name,
+                        'departure_time' => $flight->departure_time->setTimezone($departureAirport->timezone)->format('Y-m-d H:i:m'),
+                        'arrival' => ($arrivalAirport = $flight->arrivalAirport)->name,
+                        'arrival_time' => $flight->arrival_time->setTimezone($arrivalAirport->timezone)->format('Y-m-d H:i:m'),
+                    ];
+                }),
             ],
         ]);
     }
