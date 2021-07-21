@@ -57,7 +57,7 @@
           </td>
         </tr>
         <tr v-if="trip.flights.length === 0">
-          <td class="border-t px-6 py-4" colspan="4">No flights found.</td>
+          <td class="border-t px-6 py-4" colspan="8">No flights found.</td>
         </tr>
       </table>
     </div>

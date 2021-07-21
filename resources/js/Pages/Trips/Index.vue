@@ -57,10 +57,11 @@
           </td>
         </tr>
         <tr v-if="trips.length === 0">
-          <td class="border-t px-6 py-4" colspan="4">No trips found.</td>
+          <td class="border-t px-6 py-4" colspan="6">No trips found.</td>
         </tr>
       </table>
     </div>
+    <pagination class="mt-6" :links="trips.links" />
   </div>
 </template>
 
@@ -71,11 +72,13 @@ import Layout from '@/Shared/Layout'
 import throttle from 'lodash/throttle'
 import mapValues from 'lodash/mapValues'
 import SearchFilter from '@/Shared/SearchFilter'
+import Pagination from '@/Shared/Pagination'
 
 export default {
   metaInfo: { title: 'trips' },
   components: {
     Icon,
+    Pagination,
     SearchFilter,
   },
   layout: Layout,

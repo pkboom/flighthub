@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Airport;
+use App\Models\Flight;
 use App\Models\Trip;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -13,12 +15,10 @@ class TripController extends Controller
     public function index()
     {
         return Inertia::render('Trips/Index', [
-            'filters' => Request::all('search', 'trashed'),
             'trips' => Trip::query()
                 ->with(['flights' => function ($query) {
                     $query->with(['departureAirport', 'arrivalAirport']);
                 }])
-                // ->filter(Request::only('search', 'trashed'))
                 ->paginate(10)
                 ->withQueryString()
                 ->through(fn ($trip) => [
@@ -34,7 +34,26 @@ class TripController extends Controller
 
     public function create()
     {
-        return Inertia::render('Trips/Create');
+        return Inertia::render('Trips/Create', [
+            'filters' => Request::all('departure', 'arrival', 'datetime'),
+            'airports' => Airport::all(),
+            'flights' => Flight::query()
+                ->with('departureAirport', 'arrivalAirport', 'airline')
+                ->filter(Request::only('departure', 'arrival', 'datetime'))
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn ($flight) => [
+                    'id' => $flight->id,
+                    'airline_code' => $flight->airline->code,
+                    'airline_name' => $flight->airline->name,
+                    'number' => $flight->number,
+                    'price' => $flight->price,
+                    'departure' => ($departureAirport = $flight->departureAirport)->name,
+                    'departure_time' => $flight->departure_time->setTimezone($departureAirport->timezone)->format('Y-m-d H:i:m'),
+                    'arrival' => ($arrivalAirport = $flight->arrivalAirport)->name,
+                    'arrival_time' => $flight->arrival_time->setTimezone($arrivalAirport->timezone)->format('Y-m-d H:i:m'),
+                ]),
+        ]);
     }
 
     public function store()
