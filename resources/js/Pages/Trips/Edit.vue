@@ -8,15 +8,19 @@
       </h1>
     </div>
     <div class="bg-white rounded-md shadow overflow-hidden max-w-3xl">
-      <form @submit.prevent="update">
-        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <text-input v-model="form.departure_location" class="pr-6 pb-8 w-full lg:w-1/2" label="Departure" disabled />
-          <text-input v-model="form.arrival_location" class="pr-6 pb-8 w-full lg:w-1/2" label="Arrival" disabled />
-          <text-input v-model="form.departure_time" class="pr-6 pb-8 w-full lg:w-1/2" label="Departure Time" disabled />
-          <text-input v-model="form.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" disabled />
-          <text-input v-model="form.price" class="pr-6 pb-8 w-full lg:w-1/2" label="Price" disabled />
-        </div>
-      </form>
+      <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
+        <text-input v-model="form.departure_location" class="pr-6 pb-8 w-full lg:w-1/2" label="Departure" disabled />
+        <text-input v-model="form.arrival_location" class="pr-6 pb-8 w-full lg:w-1/2" label="Arrival" disabled />
+        <text-input v-model="form.departure_time" class="pr-6 pb-8 w-full lg:w-1/2" label="Departure Time" disabled />
+        <text-input v-model="form.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" disabled />
+        <text-input v-model="form.price" class="pr-6 pb-8 w-full lg:w-1/2" label="Price" disabled />
+      </div>
+      <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end">
+        <button :disabled="sending" class="flex items-center btn-indigo" @click="destroy">
+          <div v-if="sending" class="btn-spinner mr-2" />
+          Delete Trip
+        </button>
+      </div>
     </div>
     <div class="bg-white rounded-md shadow overflow-x-auto mt-4">
       <table class="w-full whitespace-nowrap">
@@ -81,24 +85,25 @@ export default {
   props: {
     trip: Object,
   },
-  remember: 'form',
   data() {
     return {
-      form: this.$inertia.form({
-        _method: 'put',
+      sending: false,
+      form: {
         departure_location: this.trip.departure_location,
         departure_time: this.trip.departure_time,
         arrival_location: this.trip.arrival_location,
         flights: this.trip.flights,
         price: this.trip.price.toString(),
         type: this.trip.type,
-      }),
+      },
     }
   },
   methods: {
-    update() {
-      this.form.post(this.route('trips.update', this.trip.id), {
-        onSuccess: () => this.form.reset('password', 'photo'),
+    destroy() {
+      this.$inertia.delete(this.route('trips.destroy', this.trip.id), {
+        onFinish: visit => {
+          this.sending = false
+        },
       })
     },
   },

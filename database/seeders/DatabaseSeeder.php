@@ -6,6 +6,8 @@ use App\Models\Airline;
 use App\Models\Airport;
 use App\Models\Flight;
 use App\Models\Trip;
+use Carbon\Carbon;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,6 +17,11 @@ class DatabaseSeeder extends Seeder
         Airline::create([
             'code' => 'AC',
             'name' => 'Air Canada',
+        ]);
+
+        Airline::create([
+            'code' => 'WN',
+            'name' => 'Southwest Airlines',
         ]);
 
         Airport::create([
@@ -41,32 +48,38 @@ class DatabaseSeeder extends Seeder
             'timezone' => 'America/Vancouver',
         ]);
 
-        Flight::create([
-            'airline_id' => Airline::first()->id,
-            'number' => '301',
-            'departure_airport_id' => Airport::first()->id,
-            'departure_time' => '07:35',
-            'arrival_airport_id' => Airport::offset(1)->first()->id,
-            'arrival_time' => '10:05',
-            'price' => '273.23',
+        Airport::create([
+            'code' => 'LAX',
+            'city_code' => 'LAX',
+            'name' => 'Los Angeles International Airport',
+            'city' => 'Los Angeles',
+            'country_code' => 'US',
+            'region_code' => 'CA',
+            'latitude' => 37.7007814,
+            'longitude' => -116.4313936,
+            'timezone' => 'America/Los_Angeles',
         ]);
 
-        Flight::create([
-            'airline_id' => Airline::first()->id,
-            'number' => '302',
-            'departure_airport_id' => Airport::offset(1)->first()->id,
-            'departure_time' => '11:30',
-            'arrival_airport_id' => Airport::first()->id,
-            'arrival_time' => '19:11',
-            'price' => '220.63',
-        ]);
+        $faker = Faker::create();
+
+        foreach (range(100, 500) as $number) {
+            $airports = Airport::inRandomOrder()->get();
+
+            Flight::create([
+                'airline_id' => Airline::inRandomOrder()->first()->id,
+                'number' => $number,
+                'departure_airport_id' => $airports->first()->id,
+                'departure_time' => $departureTime = $faker->dateTimeBetween('now', '1 year'),
+                'arrival_airport_id' => $airports->last()->id,
+                'arrival_time' => Carbon::instance($departureTime)->addHours(5),
+                'price' => $faker->numberBetween(100, 500),
+            ]);
+        }
 
         $trip = Trip::create([
             'type' => Trip::ONE_WAY,
         ]);
 
-        $trip->flights()->attach([
-            'flight_id' => Flight::first()->id,
-        ]);
+        $trip->flights()->attach(Flight::first());
     }
 }
