@@ -1,15 +1,7 @@
 <template>
   <div>
     <h1 class="mb-8 font-bold text-3xl">Trips</h1>
-    <div class="mb-6 flex justify-between items-center">
-      <search-filter v-model="form.search" class="w-full max-w-md mr-4" @reset="reset">
-        <label class="block text-gray-700">Type:</label>
-        <select v-model="form.type" class="mt-1 w-full form-select">
-          <option :value="null" />
-          <option value="one_way">One Way</option>
-          <option value="round_trip">Round Trip</option>
-        </select>
-      </search-filter>
+    <div class="mb-6 flex justify-end items-center">
       <inertia-link class="btn-indigo" :href="route('trips.create')">
         <span>Create</span>
         <span class="hidden md:inline">Trip</span>
@@ -71,7 +63,6 @@ import pickBy from 'lodash/pickBy'
 import Layout from '@/Shared/Layout'
 import throttle from 'lodash/throttle'
 import mapValues from 'lodash/mapValues'
-import SearchFilter from '@/Shared/SearchFilter'
 import Pagination from '@/Shared/Pagination'
 
 export default {
@@ -79,21 +70,11 @@ export default {
   components: {
     Icon,
     Pagination,
-    SearchFilter,
   },
   layout: Layout,
   props: {
     filters: Object,
     trips: Object,
-  },
-  data() {
-    return {
-      form: {
-        search: this.filters.search,
-        role: this.filters.role,
-        trashed: this.filters.trashed,
-      },
-    }
   },
   watch: {
     form: {

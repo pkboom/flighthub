@@ -44,7 +44,7 @@
           <th class="px-6 pt-6 pb-4">Departure</th>
           <th class="px-6 pt-6 pb-4">Departure Time</th>
           <th class="px-6 pt-6 pb-4">Arrival</th>
-          <th class="px-6 pt-6 pb-4">Arrival Time</th>
+          <th class="px-6 pt-6 pb-4" colspan="2">Arrival Time</th>
         </tr>
         <tr v-for="flight in flights.data" :key="flight.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
           <td class="px-6 py-4 border-t">
@@ -70,6 +70,9 @@
           </td>
           <td class="px-6 py-4 border-t">
             {{ flight.arrival_time }}
+          </td>
+          <td class="border-t w-px">
+            <button class="text-green-600 hover:underline" tabindex="-1" type="button" @click="addToTrip(flight)">Add to trip</button>
           </td>
         </tr>
         <tr v-if="flights.data.length === 0">
@@ -118,6 +121,9 @@ export default {
     search() {
       console.log(pickBy(this.form))
       this.$inertia.get(this.route('trips.create'), pickBy(this.form), { preserveState: true })
+    },
+    addToTrip(flight) {
+      console.log(flight)
     },
     store() {
       this.form.post(this.route('trips.create'))
