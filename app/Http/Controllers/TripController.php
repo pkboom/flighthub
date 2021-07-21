@@ -37,7 +37,7 @@ class TripController extends Controller
         return Inertia::render('Trips/Create', [
             'filters' => Request::all('departure', 'arrival', 'datetime'),
             'airports' => Airport::all(),
-            'flights' => Flight::query()
+            'flights' => Request::input('departure') ? Flight::query()
                 ->with('departureAirport', 'arrivalAirport', 'airline')
                 ->filter(Request::only('departure', 'arrival', 'datetime'))
                 ->paginate(10)
@@ -52,7 +52,10 @@ class TripController extends Controller
                     'departure_time' => $flight->departure_time->setTimezone($departureAirport->timezone)->format('Y-m-d H:i:m'),
                     'arrival' => ($arrivalAirport = $flight->arrivalAirport)->name,
                     'arrival_time' => $flight->arrival_time->setTimezone($arrivalAirport->timezone)->format('Y-m-d H:i:m'),
-                ]),
+                ]) : [
+                    'data' => [],
+                    'links' => [],
+                ],
         ]);
     }
 
