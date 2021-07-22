@@ -48,7 +48,7 @@
             </inertia-link>
           </td>
         </tr>
-        <tr v-if="trips.length === 0">
+        <tr v-if="trips.data.length === 0">
           <td class="border-t px-6 py-4" colspan="6">No trips found.</td>
         </tr>
       </table>
