@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 Clone the repo:
 
@@ -62,6 +62,8 @@ Routes
 | GET | trips/create | App\Http\Controllers\TripController@create |
 | DELETE | trips/{trip} | App\Http\Controllers\TripController@destroy |
 | GET | trips/{trip}/edit | App\Http\Controllers\TripController@edit |
+
+# Start
 
 Go to `/trips` to start booking.
 
