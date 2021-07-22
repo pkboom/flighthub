@@ -18,32 +18,32 @@
         </tr>
         <tr v-for="trip in trips.data" :key="trip.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
           <td class="border-t">
-            <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('trips.edit', trip.id)">
+            <inertia-link class="px-6 py-4 flex items-center focus:text-indigo-500" :href="route('trips.show', trip.id)">
               {{ trip.type }}
             </inertia-link>
           </td>
           <td class="border-t">
-            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.show', trip.id)" tabindex="-1">
               {{ trip.departure_location }}
             </inertia-link>
           </td>
           <td class="border-t">
-            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.show', trip.id)" tabindex="-1">
               {{ trip.arrival_location }}
             </inertia-link>
           </td>
           <td class="border-t">
-            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.show', trip.id)" tabindex="-1">
               {{ trip.departure_time }}
             </inertia-link>
           </td>
           <td class="border-t">
-            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+            <inertia-link class="px-6 py-4 flex items-center" :href="route('trips.show', trip.id)" tabindex="-1">
               {{ trip.price }}
             </inertia-link>
           </td>
           <td class="border-t w-px">
-            <inertia-link class="px-4 flex items-center" :href="route('trips.edit', trip.id)" tabindex="-1">
+            <inertia-link class="px-4 flex items-center" :href="route('trips.show', trip.id)" tabindex="-1">
               <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
             </inertia-link>
           </td>

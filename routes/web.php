@@ -15,8 +15,8 @@ Route::get('trips/create', [TripController::class, 'create'])
 Route::post('trips', [TripController::class, 'store'])
     ->name('trips.store');
 
-Route::get('trips/{trip}/edit', [TripController::class, 'edit'])
-    ->name('trips.edit');
+Route::get('trips/{trip}', [TripController::class, 'show'])
+    ->name('trips.show');
 
 Route::delete('trips/{trip}', [TripController::class, 'destroy'])
     ->name('trips.destroy');

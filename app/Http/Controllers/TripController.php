@@ -54,10 +54,10 @@ class TripController extends Controller
 
         $trip->flights()->attach(collect(Request::input('bookings'))->pluck('id'));
 
-        return Redirect::route('trips.edit', $trip)->with('success', 'Trip created.');
+        return Redirect::route('trips.show', $trip)->with('success', 'Trip created.');
     }
 
-    public function edit(Trip $trip)
+    public function show(Trip $trip)
     {
         $trip->load(['flights' => function ($query) {
             $query->with('departureAirport', 'arrivalAirport', 'airline')
