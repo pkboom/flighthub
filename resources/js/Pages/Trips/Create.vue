@@ -19,14 +19,7 @@
           </select-input>
           <div class="pr-6 pb-8 w-full lg:w-1/2">
             <label class="form-label" for="datetime">Date & Time:</label>
-            <datetime
-              id="datetime"
-              v-model="form.datetime"
-              type="datetime"
-              :hour-step="2"
-              :minute-step="15"
-              class="border-2 px-2 py-2.5 rounded"
-            />
+            <datetime id="datetime" v-model="form.datetime" class="border-2 px-2 py-2.5 rounded" />
             <div v-if="errors.datetime" class="form-error">{{ errors.datetime }}</div>
           </div>
           <select-input v-model="form.type" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type">

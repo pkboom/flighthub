@@ -60,7 +60,8 @@ class TripController extends Controller
     public function edit(Trip $trip)
     {
         $trip->load(['flights' => function ($query) {
-            $query->with('departureAirport', 'arrivalAirport', 'airline');
+            $query->with('departureAirport', 'arrivalAirport', 'airline')
+                ->orderBy('departure_time');
         }]);
 
         return Inertia::render('Trips/Edit', [
