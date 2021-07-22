@@ -64,3 +64,7 @@ Routes
 | GET | trips/{trip}/edit | App\Http\Controllers\TripController@edit |
 
 Go to `/trips` to start booking.
+
+![Trips](images/screenshot1.png)
+![Create Trip](images/screenshot2.png)
+![Show Trip](images/screenshot3.png)
