@@ -1,16 +1,10 @@
-# Ping CRM
-
-A demo application to illustrate how Inertia.js works.
-
-![](https://raw.githubusercontent.com/inertiajs/pingcrm/master/screenshot.png)
-
 ## Installation
 
-Clone the repo locally:
+Clone the repo:
 
 ```sh
-git clone https://github.com/inertiajs/pingcrm.git pingcrm
-cd pingcrm
+git clone https://github.com/pkboom/flighthub.git
+cd flighthub
 ```
 
 Install PHP dependencies:
@@ -19,63 +13,55 @@ Install PHP dependencies:
 composer install
 ```
 
-Install NPM dependencies:
+Install JavaScript dependencies:
 
 ```sh
-npm ci
+npm install
 ```
 
-Build assets:
+Run JavaScript build:
 
 ```sh
+# To run a development build
 npm run dev
 ```
 
-Setup configuration:
+Setup your environment variables:
 
 ```sh
 cp .env.example .env
-```
-
-Generate application key:
-
-```sh
 php artisan key:generate
 ```
 
-Create an SQLite database. You can also use another database (MySQL, Postgres), simply update your configuration accordingly.
+Create a Mysql database:
 
 ```sh
-touch database/database.sqlite
+create database flighthub
 ```
 
-Run database migrations:
+Update database configuration in `.env` file:
 
 ```sh
-php artisan migrate
+DB_CONNECTION=mysql
+DB_DATABASE=flighthub
+DB_USERNAME=root
+DB_PASSWORD=<your-password>
 ```
 
-Run database seeder:
+Migrate and seed your database:
 
 ```sh
-php artisan db:seed
+php artisan migrate --seed
 ```
 
-Run the dev server (the output will give the address):
+Routes
+| Method | URI | Action |
+|---|---|---|
+| GET | search/flights | App\Http\Controllers\SearchFlightsController |
+| GET | trips | App\Http\Controllers\TripController@index |
+| POST | trips | App\Http\Controllers\TripController@store |
+| GET | trips/create | App\Http\Controllers\TripController@create |
+| DELETE | trips/{trip} | App\Http\Controllers\TripController@destroy |
+| GET | trips/{trip}/edit | App\Http\Controllers\TripController@edit |
 
-```sh
-php artisan serve
-```
-
-You're ready to go! Visit Ping CRM in your browser, and login with:
-
-- **Username:** johndoe@example.com
-- **Password:** secret
-
-## Running tests
-
-To run the Ping CRM tests, run:
-
-```
-phpunit
-```
+Go to `/trips` to start booking.
