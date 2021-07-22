@@ -22,7 +22,6 @@ npm install
 Run JavaScript build:
 
 ```sh
-# To run a development build
 npm run dev
 ```
 
